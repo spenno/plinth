@@ -1,4 +1,4 @@
-// Define required Gulp plugins
+// Define Gulp and required plugins
 var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     minify = require('gulp-clean-css'),
