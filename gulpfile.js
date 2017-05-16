@@ -3,7 +3,6 @@ var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     minify = require('gulp-clean-css'),
     concat = require('gulp-concat'),
-    gulpif = require('gulp-if'),
     jshint = require('gulp-jshint'),
     sass = require('gulp-sass'),
     scsslint = require('gulp-scss-lint'),
@@ -12,16 +11,35 @@ var gulp = require('gulp'),
     util = require('gulp-util');
 
 
-// Configuration
+// Environment configuration (gulp --prod)
 var config = {
     production: !!util.env.prod,
     sourcemaps: !util.env.prod
 };
 
 
+// Paths
+var paths = {
+  dist: 'dist/',
+  jsMain: 'js/main.js',
+  libs: 'libs/',
+  sassMain: 'stylesheets/main.scss',
+  sassPattern: 'stylesheets/**/*.scss'
+};
+
+
+// List of scripts to concat
+var scripts = [
+    paths.libs + 'magnific-popup/dist/jquery.magnific-popup.js',
+    paths.libs + 'matchMedia/matchMedia.js',
+    paths.libs + 'placeholdr/placeholdr.js',
+    paths.jsMain
+];
+
+
 // Lint all Sass files
 gulp.task('scss-lint', function() {
-  return gulp.src('stylesheets/**/*.scss')
+  return gulp.src(paths.sassPattern)
     .pipe(scsslint())
     .pipe(scsslint.failReporter());
 });
@@ -29,23 +47,23 @@ gulp.task('scss-lint', function() {
 
 // Compile Sass
 gulp.task('sass', function () {
-  return gulp.src('stylesheets/main.scss')
-    .pipe(gulpif(config.sourcemaps, sourcemaps.init())) // Initialise source maps in default task only
+  return gulp.src(paths.sassMain)
+    .pipe(config.sourcemaps ? sourcemaps.init() : util.noop()) // Source maps in default task only
       .pipe(sass().on('error', sass.logError))
       .pipe(concat('main.css'))
-      .pipe(config.production ? minify() : util.noop()) // Uglify in production task only
-    .pipe(gulpif(config.sourcemaps, sourcemaps.write())) // Write source maps in default task only
+      .pipe(config.production ? minify() : util.noop()) // Minify in production
+    .pipe(config.sourcemaps ? sourcemaps.write() : util.noop()) // Source maps in default task only
     .pipe(autoprefixer({
       browsers: ['last 2 versions'],
       cascade: false
     }))
-    .pipe(gulp.dest('dist/'))
+    .pipe(gulp.dest(paths.dist))
 });
 
 
 // Lint the main JavaScript file
 gulp.task('jshint', function() {
-  return gulp.src('js/main.js')
+  return gulp.src(paths.jsMain)
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'));
 });
@@ -53,20 +71,20 @@ gulp.task('jshint', function() {
 
 // JavaScript task
 gulp.task('js', function() {
-  return gulp.src(['libs/magnific-popup/dist/jquery.magnific-popup.js', 'js/main.js'])
-    .pipe(gulpif(config.sourcemaps, sourcemaps.init())) // Initialise source maps in default task only
+  return gulp.src(scripts)
+    .pipe(config.sourcemaps ? sourcemaps.init() : util.noop()) // Source maps in default task only
       .pipe(concat('main.js'))
-      .pipe(config.production ? uglify() : util.noop()) // Uglify in production task only
-    .pipe(gulpif(config.sourcemaps, sourcemaps.write())) // Write source maps in default task only
-    .pipe(gulp.dest('dist/'));
+      .pipe(config.production ? uglify() : util.noop()) // Uglify in production
+    .pipe(config.sourcemaps ? sourcemaps.write() : util.noop()) // Source maps in default task only
+    .pipe(gulp.dest(paths.dist));
 });
 
 
 // Watch for Sass and JavaScript changes
 gulp.task('watch', function () {
-  if (config.production) return; // Don't watch in production task
-  gulp.watch('stylesheets/**/*.scss', ['sass']);
-  gulp.watch('js/main.js', ['js']);
+  if (config.production) return; // Don't watch in production environment
+  gulp.watch(paths.sassPattern, ['sass']);
+  gulp.watch(paths.jsMain, ['js']);
 });
 
 
