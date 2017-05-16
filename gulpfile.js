@@ -18,13 +18,13 @@ var config = {
 };
 
 
-// Paths
+// Paths to assets
 var paths = {
-  dist: 'dist/',
-  jsMain: 'js/main.js',
-  libs: 'libs/',
-  sassMain: 'stylesheets/main.scss',
-  sassPattern: 'stylesheets/**/*.scss'
+    dist: 'dist/',
+    jsMain: 'js/main.js',
+    libs: 'libs/',
+    sassMain: 'stylesheets/main.scss',
+    sassPattern: 'stylesheets/**/*.scss'
 };
 
 
