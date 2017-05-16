@@ -50,7 +50,7 @@ gulp.task('sass', function () {
   return gulp.src(paths.sassMain)
     .pipe(config.sourcemaps ? sourcemaps.init() : util.noop()) // Source maps in default task only
       .pipe(sass().on('error', sass.logError))
-      .pipe(concat('main.css'))
+      .pipe(concat('plinth.css'))
       .pipe(config.production ? minify() : util.noop()) // Minify in production
     .pipe(config.sourcemaps ? sourcemaps.write() : util.noop()) // Source maps in default task only
     .pipe(autoprefixer({
@@ -73,7 +73,7 @@ gulp.task('jshint', function() {
 gulp.task('js', function() {
   return gulp.src(scripts)
     .pipe(config.sourcemaps ? sourcemaps.init() : util.noop()) // Source maps in default task only
-      .pipe(concat('main.js'))
+      .pipe(concat('plinth.js'))
       .pipe(config.production ? uglify() : util.noop()) // Uglify in production
     .pipe(config.sourcemaps ? sourcemaps.write() : util.noop()) // Source maps in default task only
     .pipe(gulp.dest(paths.dist));
