@@ -64,6 +64,7 @@ gulp.task('js', function() {
 
 // Watch for Sass and JavaScript changes
 gulp.task('watch', function () {
+  if (config.production) return; // Don't watch in production task
   gulp.watch('stylesheets/**/*.scss', ['sass']);
   gulp.watch('js/main.js', ['js']);
 });
