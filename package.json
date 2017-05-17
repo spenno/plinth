@@ -1,7 +1,7 @@
 {
   "name": "plinth",
   "version": "1.0.0",
-  "description": "Front-end framework using sass-boilerplate and gulp.js",
+  "description": "A simple starting point for front-end projects",
   "main": "js/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
