@@ -21,8 +21,9 @@ var config = {
 // Paths to assets
 var paths = {
     dist: 'dist/',
+    jQuery: 'node_modules/jquery/dist/jquery.min.js',
     jsMain: 'js/main.js',
-    libs: 'libs/',
+    nodeModules: 'node_modules/',
     sassMain: 'stylesheets/main.scss',
     sassPattern: 'stylesheets/**/*.scss'
 };
@@ -30,11 +31,17 @@ var paths = {
 
 // List of scripts to concat
 var scripts = [
-    paths.libs + 'magnific-popup/dist/jquery.magnific-popup.js',
-    paths.libs + 'matchMedia/matchMedia.js',
-    paths.libs + 'placeholdr/placeholdr.js',
+    paths.nodeModules + 'match-media/matchMedia.js',
+    paths.nodeModules + 'jquery-placeholder/jquery.placeholder.js',
     paths.jsMain
 ];
+
+
+// Copy jQuery to dist folder in production
+gulp.task('copy', function() {
+  return gulp.src(paths.jQuery)
+    .pipe(config.production ? gulp.dest(paths.dist) : util.noop())
+});
 
 
 // Lint all Sass files
@@ -82,11 +89,11 @@ gulp.task('js', function() {
 
 // Watch for Sass and JavaScript changes
 gulp.task('watch', function () {
-  if (config.production) return; // Don't watch in production environment
+  if (config.production) return; // Don't watch in production
   gulp.watch(paths.sassPattern, ['sass']);
   gulp.watch(paths.jsMain, ['js']);
 });
 
 
 // Default task ('gulp')
-gulp.task('default', ['scss-lint', 'sass', 'jshint', 'js', 'watch']);
+gulp.task('default', ['copy', 'scss-lint', 'sass', 'jshint', 'js', 'watch']);
