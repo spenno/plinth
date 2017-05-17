@@ -1,9 +1,11 @@
-'use strict';
-
 (function($) {
+  'use strict';
 
   // On document ready...
   $(document).ready(function() {
+    // Add placeholder behaviour for older browsers
+    $('input, textarea').placeholder();
+
 
   });
 
