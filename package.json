@@ -22,5 +22,6 @@
     "gulp-util": "^3.0.8",
     "jshint": "^2.9.4",
     "jshint-stylish": "^2.2.1"
-  }
+  },
+  "repository": "https://spenno@github.com/spenno/plinth.git"
 }
