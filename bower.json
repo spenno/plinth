@@ -8,12 +8,8 @@
     "node_modules"
   ],
   "dependencies": {
-    "breakpoint-sass": "2.x",
-    "jquery": "1.x",
-    "magnific-popup": "1.x",
-    "matchheight": "0.x",
-    "matchMedia": "0.x",
-    "placeholdr": "latest",
-    "susy": "2.x"
+    "jquery": "^3.2.1",
+    "matchMedia": "^0.3.0",
+    "placeholdr": "*"
   }
 }
