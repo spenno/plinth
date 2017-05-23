@@ -1,6 +1,7 @@
 // Define Gulp and required plugins
 var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
+    browsersync = require('browser-sync').create(),
     minify = require('gulp-clean-css'),
     concat = require('gulp-concat'),
     jshint = require('gulp-jshint'),
@@ -14,7 +15,8 @@ var gulp = require('gulp'),
 // Environment configuration (gulp --prod)
 var config = {
     production: !!util.env.prod,
-    sourcemaps: !util.env.prod
+    sourcemaps: !util.env.prod,
+    browsersync: !util.env.prod
 };
 
 
@@ -44,27 +46,22 @@ gulp.task('copy', function() {
 });
 
 
+// Browsersync
+gulp.task('browsersync', ['js', 'sass'], function() {
+  if (config.production) return; // Don't initiate in production
+  browsersync.init({
+    server: {
+      baseDir: './'
+    }
+  });
+});
+
+
 // Lint all Sass files
 gulp.task('scss-lint', function() {
   return gulp.src(paths.sassPattern)
     .pipe(scsslint())
     .pipe(scsslint.failReporter());
-});
-
-
-// Compile Sass
-gulp.task('sass', function () {
-  return gulp.src(paths.sassMain)
-    .pipe(config.sourcemaps ? sourcemaps.init() : util.noop()) // Source maps in default task only
-      .pipe(sass().on('error', sass.logError))
-      .pipe(concat('plinth.css'))
-      .pipe(config.production ? minify() : util.noop()) // Minify in production
-    .pipe(config.sourcemaps ? sourcemaps.write() : util.noop()) // Source maps in default task only
-    .pipe(autoprefixer({
-      browsers: ['last 2 versions'],
-      cascade: false
-    }))
-    .pipe(gulp.dest(paths.dist))
 });
 
 
@@ -76,8 +73,25 @@ gulp.task('jshint', function() {
 });
 
 
+// Compile Sass
+gulp.task('sass', ['scss-lint'], function () {
+  return gulp.src(paths.sassMain)
+    .pipe(config.sourcemaps ? sourcemaps.init() : util.noop()) // Source maps in default task only
+      .pipe(sass().on('error', sass.logError))
+      .pipe(concat('plinth.css'))
+      .pipe(config.production ? minify() : util.noop()) // Minify in production
+    .pipe(config.sourcemaps ? sourcemaps.write() : util.noop()) // Source maps in default task only
+    .pipe(autoprefixer({
+      browsers: ['last 2 versions'],
+      cascade: false
+    }))
+    .pipe(gulp.dest(paths.dist))
+    .pipe(config.browsersync ? browsersync.stream() : util.noop()); // Reload CSS in Browsersync
+});
+
+
 // JavaScript task
-gulp.task('js', function() {
+gulp.task('js', ['jshint'], function() {
   return gulp.src(scripts)
     .pipe(config.sourcemaps ? sourcemaps.init() : util.noop()) // Source maps in default task only
       .pipe(concat('plinth.js'))
@@ -96,4 +110,4 @@ gulp.task('watch', function () {
 
 
 // Default task ('gulp')
-gulp.task('default', ['copy', 'scss-lint', 'sass', 'jshint', 'js', 'watch']);
+gulp.task('default', ['browsersync', 'copy', 'sass', 'js', 'watch']);
