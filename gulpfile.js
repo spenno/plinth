@@ -42,7 +42,7 @@ var scripts = [
 // Copy jQuery to dist folder in production
 gulp.task('copy', function() {
   return gulp.src(paths.jQuery)
-    .pipe(config.production ? gulp.dest(paths.dist) : util.noop())
+    .pipe(gulp.dest(paths.dist));
 });
 
 
@@ -86,7 +86,7 @@ gulp.task('sass', ['scss-lint'], function () {
       cascade: false
     }))
     .pipe(gulp.dest(paths.dist))
-    .pipe(config.browsersync ? browsersync.stream() : util.noop()); // Inject CSS in Browsersync (default task only)
+    .pipe(config.browsersync ? browsersync.stream() : util.noop()); // Inject CSS via Browsersync in default task only
 });
 
 
@@ -98,7 +98,7 @@ gulp.task('js', ['jshint'], function() {
       .pipe(config.production ? uglify() : util.noop()) // Uglify in production
     .pipe(config.sourcemaps ? sourcemaps.write() : util.noop()) // Source maps in default task only
     .pipe(gulp.dest(paths.dist))
-    .pipe(config.browsersync ? browsersync.stream() : util.noop()); // Inject JavaScript in Browsersync (default task only)
+    .pipe(config.browsersync ? browsersync.stream() : util.noop()); // Reload page via Browsersync in default task only
 });
 
 
