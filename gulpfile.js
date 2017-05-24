@@ -86,7 +86,7 @@ gulp.task('sass', ['scss-lint'], function () {
       cascade: false
     }))
     .pipe(gulp.dest(paths.dist))
-    .pipe(config.browsersync ? browsersync.stream() : util.noop()); // Reload CSS in Browsersync
+    .pipe(config.browsersync ? browsersync.stream() : util.noop()); // Inject CSS in Browsersync (default task only)
 });
 
 
@@ -97,7 +97,8 @@ gulp.task('js', ['jshint'], function() {
       .pipe(concat('plinth.js'))
       .pipe(config.production ? uglify() : util.noop()) // Uglify in production
     .pipe(config.sourcemaps ? sourcemaps.write() : util.noop()) // Source maps in default task only
-    .pipe(gulp.dest(paths.dist));
+    .pipe(gulp.dest(paths.dist))
+    .pipe(config.browsersync ? browsersync.stream() : util.noop()); // Inject JavaScript in Browsersync (default task only)
 });
 
 
