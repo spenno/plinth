@@ -1,4 +1,4 @@
-// Define Gulp and required plugins
+// Require Gulp and plugins
 var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     browsersync = require('browser-sync').create(),
@@ -15,8 +15,7 @@ var gulp = require('gulp'),
 // Environment configuration (gulp --prod)
 var config = {
     production: !!util.env.prod,
-    sourcemaps: !util.env.prod,
-    browsersync: !util.env.prod
+    development: !util.env.prod
 };
 
 
@@ -76,29 +75,29 @@ gulp.task('jshint', function() {
 // Compile Sass
 gulp.task('sass', ['scss-lint'], function () {
   return gulp.src(paths.sassMain)
-    .pipe(config.sourcemaps ? sourcemaps.init() : util.noop()) // Source maps in default task only
+    .pipe(config.development ? sourcemaps.init() : util.noop()) // Source maps in default task only
       .pipe(sass().on('error', sass.logError))
       .pipe(concat('plinth.css'))
       .pipe(config.production ? minify() : util.noop()) // Minify in production
-    .pipe(config.sourcemaps ? sourcemaps.write() : util.noop()) // Source maps in default task only
+    .pipe(config.development ? sourcemaps.write() : util.noop()) // Source maps in default task only
     .pipe(autoprefixer({
       browsers: ['last 2 versions'],
       cascade: false
     }))
     .pipe(gulp.dest(paths.dist))
-    .pipe(config.browsersync ? browsersync.stream() : util.noop()); // Inject CSS via Browsersync in default task only
+    .pipe(config.development ? browsersync.stream() : util.noop()); // Inject CSS via Browsersync in default task only
 });
 
 
 // JavaScript task
 gulp.task('js', ['jshint'], function() {
   return gulp.src(scripts)
-    .pipe(config.sourcemaps ? sourcemaps.init() : util.noop()) // Source maps in default task only
+    .pipe(config.development ? sourcemaps.init() : util.noop()) // Source maps in default task only
       .pipe(concat('plinth.js'))
       .pipe(config.production ? uglify() : util.noop()) // Uglify in production
-    .pipe(config.sourcemaps ? sourcemaps.write() : util.noop()) // Source maps in default task only
+    .pipe(config.development ? sourcemaps.write() : util.noop()) // Source maps in default task only
     .pipe(gulp.dest(paths.dist))
-    .pipe(config.browsersync ? browsersync.stream() : util.noop()); // Reload page via Browsersync in default task only
+    .pipe(config.development ? browsersync.stream() : util.noop()); // Reload page via Browsersync in default task only
 });
 
 
