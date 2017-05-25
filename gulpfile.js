@@ -38,7 +38,7 @@ var scripts = [
 ];
 
 
-// Copy jQuery to dist folder in production
+// Copy fallback jQuery to dist folder
 gulp.task('copy', function() {
   return gulp.src(paths.jQuery)
     .pipe(gulp.dest(paths.dist));
