@@ -1,5 +1,6 @@
 HR = \n---------------------------------------------
 BUILD := build
+CHECK=\033[32m✔\033[39m
 
 BREW = $(shell which brew)
 SASS = $(shell which sass)
@@ -22,7 +23,7 @@ endif
 ifeq (${BREW}, )
 	ruby -e "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 else
-	@ echo "Homebrew v$(shell brew --version) is already installed.\n"
+	@ echo "$(shell brew --version) is already installed.\n"
 endif
 
 	@ echo "${HR}\nInstalling Sass and its dependencies...${HR}\n"
@@ -66,5 +67,5 @@ endif
 	@ sudo npm install
 	@ echo "\n${CHECK} Done"
 
-	@ echo "Run 'gulp' to start in development mode and watch for Sass and JavaScript changes."
-	@ echo "Run 'gulp --prod' to minify CSS and JavaScript ready for production."
+	@ echo "${HR}\nRun 'gulp' to start in development mode and watch for Sass and JavaScript changes."
+	@ echo "Run 'gulp --prod' to minify CSS and JavaScript ready for production.${HR}\n"
