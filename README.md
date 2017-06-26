@@ -12,16 +12,16 @@ $ make
 
 ### Usage
 
-Run 'gulp' to start in development mode and watch for Sass and JavaScript changes. CSS and JavaScript isn't minified and source maps are added.
+Run 'gulp' to start in development mode and watch for Sass and JavaScript changes.
 
 ```
 $ gulp
 ```
 
-Run 'gulp --prod' to minify CSS and JavaScript ready for production. Source maps are removed.
+Run 'gulp prod' to minify CSS and JavaScript ready for production.
 
 ```
-$ gulp --prod
+$ gulp prod
 ```
 
 ## Built with

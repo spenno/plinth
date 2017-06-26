@@ -12,13 +12,6 @@ var gulp = require('gulp'),
     util = require('gulp-util');
 
 
-// Environment configuration (gulp --prod)
-var config = {
-    production: !!util.env.prod,
-    development: !util.env.prod
-};
-
-
 // Paths to assets
 var paths = {
     dist: 'dist/',
@@ -46,8 +39,7 @@ gulp.task('copy', function() {
 
 
 // Browsersync
-gulp.task('browsersync', ['js', 'sass'], function() {
-  if (config.production) return; // Don't initiate in production
+gulp.task('browsersync', ['js:dev', 'sass:dev'], function() {
   browsersync.init({
     server: {
       baseDir: './'
@@ -72,42 +64,65 @@ gulp.task('jshint', function() {
 });
 
 
-// Compile Sass
-gulp.task('sass', ['scss-lint'], function () {
+// Compile Sass for development
+gulp.task('sass:dev', ['scss-lint'], function () {
   return gulp.src(paths.sassMain)
-    .pipe(config.development ? sourcemaps.init() : util.noop()) // Source maps in default task only
+    .pipe(sourcemaps.init())
       .pipe(sass().on('error', sass.logError))
       .pipe(concat('plinth.css'))
-      .pipe(config.production ? minify() : util.noop()) // Minify in production
-    .pipe(config.development ? sourcemaps.write() : util.noop()) // Source maps in default task only
+    .pipe(sourcemaps.write())
     .pipe(autoprefixer({
       browsers: ['last 2 versions'],
       cascade: false
     }))
     .pipe(gulp.dest(paths.dist))
-    .pipe(config.development ? browsersync.stream() : util.noop()); // Inject CSS via Browsersync in default task only
+    .pipe(browsersync.stream());
+});
+
+
+// Compile Sass for production
+gulp.task('sass:prod', ['scss-lint'], function () {
+  return gulp.src(paths.sassMain)
+    .pipe(sass().on('error', sass.logError))
+    .pipe(concat('plinth.css'))
+    .pipe(minify())
+    .pipe(autoprefixer({
+      browsers: ['last 2 versions'],
+      cascade: false
+    }))
+    .pipe(gulp.dest(paths.dist))
+});
+
+
+// Development JavaScript task
+gulp.task('js:dev', ['jshint'], function() {
+  return gulp.src(scripts)
+    .pipe(sourcemaps.init())
+    .pipe(concat('plinth.js'))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest(paths.dist));
 });
 
 
 // JavaScript task
-gulp.task('js', ['jshint'], function() {
+gulp.task('js:prod', ['jshint'], function() {
   return gulp.src(scripts)
-    .pipe(config.development ? sourcemaps.init() : util.noop()) // Source maps in default task only
-      .pipe(concat('plinth.js'))
-      .pipe(config.production ? uglify() : util.noop()) // Uglify in production
-    .pipe(config.development ? sourcemaps.write() : util.noop()) // Source maps in default task only
-    .pipe(gulp.dest(paths.dist))
-    .pipe(config.development ? browsersync.stream() : util.noop()); // Reload page via Browsersync in default task only
+    .pipe(concat('plinth.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest(paths.dist));
 });
 
 
 // Watch for Sass and JavaScript changes
 gulp.task('watch', function () {
-  if (config.production) return; // Don't watch in production
-  gulp.watch(paths.sassPattern, ['sass']);
-  gulp.watch(paths.jsMain, ['js']);
+  gulp.watch(paths.sassPattern, ['sass:dev']);
+  gulp.watch(paths.jsMain, ['js:dev']);
 });
 
 
-// Default task ('gulp')
-gulp.task('default', ['browsersync', 'copy', 'sass', 'js', 'watch']);
+// Default development task ('gulp')
+gulp.task('default', ['browsersync', 'copy', 'sass:dev', 'js:dev', 'watch']);
+
+
+// Production task ('gulp prod')
+gulp.task('prod', ['copy', 'sass:prod', 'js:prod']);
