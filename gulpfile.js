@@ -15,7 +15,6 @@ var gulp = require('gulp'),
 // Paths to assets
 var paths = {
     dist: 'dist/',
-    jQuery: 'node_modules/jquery/dist/jquery.min.js',
     jsMain: 'js/main.js',
     nodeModules: 'node_modules/',
     sassMain: 'stylesheets/main.scss',
@@ -26,16 +25,8 @@ var paths = {
 // List of scripts to concat
 var scripts = [
     paths.nodeModules + 'match-media/matchMedia.js',
-    paths.nodeModules + 'jquery-placeholder/jquery.placeholder.js',
     paths.jsMain
 ];
-
-
-// Copy fallback jQuery to dist folder
-gulp.task('copy', function() {
-  return gulp.src(paths.jQuery)
-    .pipe(gulp.dest(paths.dist));
-});
 
 
 // Browsersync
@@ -121,8 +112,8 @@ gulp.task('watch', function () {
 
 
 // Default development task ('gulp')
-gulp.task('default', ['browsersync', 'copy', 'sass:dev', 'js:dev', 'watch']);
+gulp.task('default', ['browsersync', 'sass:dev', 'js:dev', 'watch']);
 
 
 // Production task ('gulp prod')
-gulp.task('prod', ['copy', 'sass:prod', 'js:prod']);
+gulp.task('prod', ['sass:prod', 'js:prod']);
