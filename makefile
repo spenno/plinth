@@ -5,7 +5,6 @@ CHECK=\033[32m✔\033[39m
 BREW = $(shell which brew)
 SASS = $(shell which sass)
 SASSLINT = $(shell which scss_lint)
-YARN = $(shell which yarn)
 GULP = $(shell which gulp)
 NODE = $(shell which node)
 XCODE = $(shell pkgutil --pkg-info=com.apple.pkg.CLTools_Executables)
@@ -47,15 +46,6 @@ ifeq (${NODE}, )
 else
 	@ echo "Node $(shell node --version) is already installed."
 endif
-	@ echo "\n${CHECK} Done"
-
-	@ echo "${HR}\nInstalling Yarn and its dependencies...${HR}\n"
-ifeq (${YARN}, )
-	@ brew install yarn
-else
-	@ echo "Yarn v$(shell yarn --version) is already installed."
-endif
-	@ yarn install
 	@ echo "\n${CHECK} Done"
 
 	@ echo "${HR}\nInstalling Gulp and its libraries...${HR}\n"

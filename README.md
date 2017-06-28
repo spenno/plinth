@@ -28,4 +28,3 @@ $ gulp prod
 
 * [Sass Boilerplate](https://github.com/HugoGiraudel/sass-boilerplate) - A boilerplate for Sass projects
 * [Gulp](http://gulpjs.com/) - Automate and enhance your workflow
-* [Yarn](https://yarnpkg.com/) - Fast, reliable, and secure dependency management
