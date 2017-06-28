@@ -1,4 +1,9 @@
-// Require Gulp and plugins
+'use strict';
+
+// -----------------------------------------------------------------------------
+// Dependencies
+// -----------------------------------------------------------------------------
+
 var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     browsersync = require('browser-sync').create(),
@@ -12,7 +17,10 @@ var gulp = require('gulp'),
     util = require('gulp-util');
 
 
-// Paths to assets
+// -----------------------------------------------------------------------------
+// Paths
+// -----------------------------------------------------------------------------
+
 var paths = {
     dist: 'dist/',
     jsMain: 'js/main.js',
@@ -22,14 +30,20 @@ var paths = {
 };
 
 
-// List of scripts to concat
+// -----------------------------------------------------------------------------
+// Scripts to concat
+// -----------------------------------------------------------------------------
+
 var scripts = [
     paths.nodeModules + 'match-media/matchMedia.js',
     paths.jsMain
 ];
 
 
+// -----------------------------------------------------------------------------
 // Browsersync
+// -----------------------------------------------------------------------------
+
 gulp.task('browsersync', ['js:dev', 'sass:dev'], function() {
   browsersync.init({
     server: {
@@ -39,7 +53,10 @@ gulp.task('browsersync', ['js:dev', 'sass:dev'], function() {
 });
 
 
-// Lint all Sass files
+// -----------------------------------------------------------------------------
+// SCSS-Lint
+// -----------------------------------------------------------------------------
+
 gulp.task('scss-lint', function() {
   return gulp.src(paths.sassPattern)
     .pipe(scsslint())
@@ -47,7 +64,10 @@ gulp.task('scss-lint', function() {
 });
 
 
-// Lint the main JavaScript file
+// -----------------------------------------------------------------------------
+// JSHint
+// -----------------------------------------------------------------------------
+
 gulp.task('jshint', function() {
   return gulp.src(paths.jsMain)
     .pipe(jshint())
@@ -55,7 +75,10 @@ gulp.task('jshint', function() {
 });
 
 
-// Compile Sass for development
+// -----------------------------------------------------------------------------
+// Sass (development)
+// -----------------------------------------------------------------------------
+
 gulp.task('sass:dev', ['scss-lint'], function () {
   return gulp.src(paths.sassMain)
     .pipe(sourcemaps.init())
@@ -71,7 +94,10 @@ gulp.task('sass:dev', ['scss-lint'], function () {
 });
 
 
-// Compile Sass for production
+// -----------------------------------------------------------------------------
+// Sass (production)
+// -----------------------------------------------------------------------------
+
 gulp.task('sass:prod', ['scss-lint'], function () {
   return gulp.src(paths.sassMain)
     .pipe(sass().on('error', sass.logError))
@@ -85,7 +111,10 @@ gulp.task('sass:prod', ['scss-lint'], function () {
 });
 
 
-// Development JavaScript task
+// -----------------------------------------------------------------------------
+// JavaScript (development)
+// -----------------------------------------------------------------------------
+
 gulp.task('js:dev', ['jshint'], function() {
   return gulp.src(scripts)
     .pipe(sourcemaps.init())
@@ -95,7 +124,10 @@ gulp.task('js:dev', ['jshint'], function() {
 });
 
 
-// JavaScript task
+// -----------------------------------------------------------------------------
+// JavaScript (production)
+// -----------------------------------------------------------------------------
+
 gulp.task('js:prod', ['jshint'], function() {
   return gulp.src(scripts)
     .pipe(concat('plinth.js'))
@@ -104,16 +136,25 @@ gulp.task('js:prod', ['jshint'], function() {
 });
 
 
-// Watch for Sass and JavaScript changes
+// -----------------------------------------------------------------------------
+// Watch
+// -----------------------------------------------------------------------------
+
 gulp.task('watch', function () {
   gulp.watch(paths.sassPattern, ['sass:dev']);
   gulp.watch(paths.jsMain, ['js:dev']);
 });
 
 
-// Default development task ('gulp')
+// -----------------------------------------------------------------------------
+// Default task (development)
+// -----------------------------------------------------------------------------
+
 gulp.task('default', ['browsersync', 'sass:dev', 'js:dev', 'watch']);
 
 
-// Production task ('gulp prod')
+// -----------------------------------------------------------------------------
+// Production task
+// -----------------------------------------------------------------------------
+
 gulp.task('prod', ['sass:prod', 'js:prod']);
