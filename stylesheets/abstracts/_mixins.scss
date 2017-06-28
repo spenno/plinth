@@ -32,3 +32,9 @@
   }
 }
 
+/// Font sizes
+/// @author Ben Spencer
+/// @param {String} $context
+@mixin font-size($fs) {
+  font-size: map-get($font-size, $fs);
+}
