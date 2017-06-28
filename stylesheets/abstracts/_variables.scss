@@ -54,11 +54,12 @@ $max-width: 1180px !default;
 /// @prop {String} keys - Keys are identifiers mapped to a given length
 /// @prop {Map} values - Values are actual breakpoints expressed in pixels
 $breakpoints: (
-  'small': 320px,
-  'medium': 768px,
-  'large': 1024px,
+  'x-small': 400px,
+  'small': 600px,
+  'medium': 760px,
+  'large': 960px,
+  'x-large': 1020px,
 ) !default;
-
 
 
 
@@ -67,5 +68,5 @@ $breakpoints: (
 /// Relative or absolute URL where all assets are served from
 /// @type String
 /// @example scss - When using a CDN
-///   $base-url: 'http://cdn.example.com/assets/';
+/// $base-url: 'http://cdn.example.com/assets/';
 $base-url: '/assets/' !default;

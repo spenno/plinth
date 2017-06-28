@@ -4,7 +4,7 @@ A solid and simple base for front-end web projects.
 
 ### Installing
 
-A makefile has been created to install all of Plinth's dependencies. Navigate to the project's folder in command line and type:
+A makefile is available that installs all of Plinth's dependencies.
 
 ```
 $ make
@@ -27,4 +27,5 @@ $ gulp prod
 ## Built with
 
 * [Sass Boilerplate](https://github.com/HugoGiraudel/sass-boilerplate) - A boilerplate for Sass projects
+* [include-media](http://include-media.com/) - Simple, elegant and maintainable media queries in Sass
 * [Gulp](http://gulpjs.com/) - Automate and enhance your workflow
