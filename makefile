@@ -17,27 +17,31 @@ ifeq (${XCODE}, )
 else
 	@ echo "Command line tools are already installed."
 endif
+	@ echo "\n${CHECK} Done"
 
 	@ echo "${HR}\nInstalling Homebrew and its dependencies...${HR}\n"
 ifeq (${BREW}, )
 	ruby -e "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 else
-	@ echo "$(shell brew --version) is already installed.\n"
+	@ echo "$(shell brew --version) is already installed."
 endif
+	@ echo "\n${CHECK} Done"
 
 	@ echo "${HR}\nInstalling Sass and its dependencies...${HR}\n"
 ifeq (${SASS}, )
 	@ gem install sass
 else
-	@ echo "$(shell sass --version) is already installed.\n"
+	@ echo "$(shell sass --version) is already installed."
 endif
+	@ echo "\n${CHECK} Done"
 
 	@ echo "${HR}\nInstalling SCSS-Lint...${HR}\n"
 ifeq (${SASSLINT}, )
-	@ sudo gem install scss_lint
+	@ gem install scss_lint
 else
-	@ echo "$(shell scss_lint --version) is already installed.\n"
+	@ echo "$(shell scss_lint --version) is already installed."
 endif
+	@ echo "\n${CHECK} Done"
 
 	@ echo "${HR}\nInstalling Node & NPM...${HR}\n"
 ifeq (${NODE}, )
@@ -52,10 +56,13 @@ endif
 ifeq (${GULP}, )
 	@ npm install -g gulp-cli
 else
-	@ echo "Gulp is already installed.\n"
+	@ echo "Gulp is already installed."
 endif
-	@ sudo npm install
+	@ echo "\n${CHECK} Done"
+
+	@ echo "${HR}\nInstalling packages...${HR}\n"
+	@ npm install
 	@ echo "\n${CHECK} Done"
 
 	@ echo "${HR}\nRun 'gulp' to start in development mode and watch for Sass and JavaScript changes."
-	@ echo "Run 'gulp --prod' to minify CSS and JavaScript ready for production.${HR}\n"
+	@ echo "Run 'gulp prod' to minify CSS and JavaScript ready for production.${HR}\n"
