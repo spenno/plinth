@@ -37,7 +37,7 @@ endif
 
 	@ echo "${HR}\nInstalling SCSS-Lint...${HR}\n"
 ifeq (${SASSLINT}, )
-	@ gem install scss_lint
+	@ sudo gem install scss_lint
 else
 	@ echo "$(shell scss_lint --version) is already installed."
 endif
