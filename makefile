@@ -29,7 +29,7 @@ endif
 
 	@ echo "${HR}\nInstalling Sass and its dependencies...${HR}\n"
 ifeq (${SASS}, )
-	@ gem install sass
+	@ sudo gem install sass
 else
 	@ echo "$(shell sass --version) is already installed."
 endif
