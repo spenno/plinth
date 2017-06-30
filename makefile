@@ -3,8 +3,6 @@ BUILD := build
 CHECK=\033[32m✔\033[39m
 
 BREW = $(shell which brew)
-SASS = $(shell which sass)
-SASSLINT = $(shell which scss_lint)
 GULP = $(shell which gulp)
 NODE = $(shell which node)
 XCODE = $(shell pkgutil --pkg-info=com.apple.pkg.CLTools_Executables)
@@ -27,21 +25,8 @@ else
 endif
 	@ echo "\n${CHECK} Done"
 
-	@ echo "${HR}\nInstalling Sass and its dependencies...${HR}\n"
-ifeq (${SASS}, )
-	@ sudo gem install sass
-else
-	@ echo "$(shell sass --version) is already installed."
-endif
-	@ echo "\n${CHECK} Done"
-
-	@ echo "${HR}\nInstalling SCSS-Lint...${HR}\n"
-ifeq (${SASSLINT}, )
-	@ sudo gem install scss_lint
-else
-	@ echo "$(shell scss_lint --version) is already installed."
-endif
-	@ echo "\n${CHECK} Done"
+	@ echo "${HR}\nInstalling Ruby gems...${HR}\n"
+	bundle check || bundle install
 
 	@ echo "${HR}\nInstalling Node & NPM...${HR}\n"
 ifeq (${NODE}, )
