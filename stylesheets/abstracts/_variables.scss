@@ -18,23 +18,6 @@ $code-font-stack: 'Courier New', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono',
 
 
 
-/// Font size map
-/// @prop {String} keys - Keys are identifiers mapped to a given font size
-/// @prop {Map} values - Values are actual font-sizes expressed in rems
-$font-size: (
-  xs: 0.875rem, // 14px
-  s: 1rem, // 16px
-  m: 1.125rem, // 18px
-  l: 1.3125rem, // 21px
-  xl: 1.5rem, // 24px
-  xxl: 2.25rem, // 36px
-  xxxl: 3rem, // 48px
-) !default;
-
-
-
-
-
 /// Copy text color
 /// @type Color
 $text-color: rgb(34, 34, 34) !default;
@@ -67,24 +50,15 @@ $max-width: 1180px !default;
 
 
 
-/// Gutter width
-/// @type Length
-$gutter: 1rem !default;
-
-
-
-
-
 /// Breakpoints map
 /// @prop {String} keys - Keys are identifiers mapped to a given length
 /// @prop {Map} values - Values are actual breakpoints expressed in pixels
 $breakpoints: (
-  'xs': 400px,
-  's': 600px,
-  'm': 760px,
-  'l': 960px,
-  'xl': 1020px,
+  'small': 320px,
+  'medium': 768px,
+  'large': 1024px,
 ) !default;
+
 
 
 
@@ -93,5 +67,5 @@ $breakpoints: (
 /// Relative or absolute URL where all assets are served from
 /// @type String
 /// @example scss - When using a CDN
-/// $base-url: 'http://cdn.example.com/assets/';
+///   $base-url: 'http://cdn.example.com/assets/';
 $base-url: '/assets/' !default;
