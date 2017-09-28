@@ -24,9 +24,7 @@
     "gulp-util": "^3.0.8",
     "include-media": "^1.4.9",
     "jshint": "^2.9.4",
-    "jshint-stylish": "^2.2.1"
-  },
-  "dependencies": {
+    "jshint-stylish": "^2.2.1",
     "match-media": "^0.2.0"
-  }
+  },
 }
