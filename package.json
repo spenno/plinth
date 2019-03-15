@@ -10,21 +10,24 @@
   "author": "Ben Spencer",
   "license": "ISC",
   "devDependencies": {
-    "browser-sync": "^2.18.12",
+    "browser-sync": "^2.26.3",
     "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^4.0.0",
-    "gulp-clean-css": "^3.3.0",
+    "gulp-autoprefixer": "^4.1.0",
+    "gulp-clean-css": "^3.10.0",
     "gulp-concat": "^2.6.1",
     "gulp-if": "^2.0.2",
-    "gulp-jshint": "^2.0.4",
-    "gulp-sass": "^3.1.0",
+    "gulp-jshint": "^2.1.0",
+    "gulp-sass": "^4.0.2",
     "gulp-scss-lint": "^0.4.0",
     "gulp-sourcemaps": "^2.6.0",
     "gulp-uglify": "^2.1.2",
     "gulp-util": "^3.0.8",
     "include-media": "^1.4.9",
-    "jshint": "^2.9.4",
+    "jshint": "^2.10.2",
     "jshint-stylish": "^2.2.1",
-    "match-media": "^0.2.0"
+    "sass-lint": "^1.12.1"
   },
+  "dependencies": {
+    "match-media": "^0.2.0"
+  }
 }
