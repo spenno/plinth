@@ -6,15 +6,15 @@
 
 var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
-    browsersync = require('browser-sync').create(),
     minify = require('gulp-clean-css'),
     concat = require('gulp-concat'),
     jshint = require('gulp-jshint'),
     sass = require('gulp-sass'),
-    scsslint = require('gulp-scss-lint'),
+    sasslint = require('gulp-sass-lint'),
     sourcemaps = require('gulp-sourcemaps'),
-    uglify = require('gulp-uglify'),
-    util = require('gulp-util');
+    uglify = require('gulp-uglify');
+
+sass.compiler = require('node-sass');
 
 
 
@@ -44,27 +44,18 @@ var scripts = [
 
 
 // -----------------------------------------------------------------------------
-// Browsersync
+// Sass Lint
 // -----------------------------------------------------------------------------
 
-gulp.task('browsersync', ['js:dev', 'sass:dev'], function() {
-  browsersync.init({
-    server: {
-      baseDir: './'
-    }
-  });
-});
-
-
-
-// -----------------------------------------------------------------------------
-// SCSS-Lint
-// -----------------------------------------------------------------------------
-
-gulp.task('scss-lint', function() {
+gulp.task('sasslint', function() {
   return gulp.src(paths.sassPattern)
-    .pipe(scsslint())
-    .pipe(scsslint.failReporter());
+    .pipe(sasslint({
+      options: {
+        configFile: '.sass-lint.yml'
+      }
+    }))
+    .pipe(sasslint.format())
+    .pipe(sasslint.failOnError())
 });
 
 
@@ -85,18 +76,17 @@ gulp.task('jshint', function() {
 // Sass (development)
 // -----------------------------------------------------------------------------
 
-gulp.task('sass:dev', ['scss-lint'], function () {
+gulp.task('sass:dev', ['sasslint'], function () {
   return gulp.src(paths.sassMain)
     .pipe(sourcemaps.init())
-      .pipe(sass().on('error', sass.logError))
+      .pipe(sass.sync().on('error', sass.logError))
       .pipe(concat('plinth.css'))
     .pipe(sourcemaps.write())
     .pipe(autoprefixer({
       browsers: ['last 2 versions'],
       cascade: false
     }))
-    .pipe(gulp.dest(paths.dist))
-    .pipe(browsersync.stream());
+    .pipe(gulp.dest(paths.dist));
 });
 
 
@@ -105,9 +95,9 @@ gulp.task('sass:dev', ['scss-lint'], function () {
 // Sass (production)
 // -----------------------------------------------------------------------------
 
-gulp.task('sass:prod', ['scss-lint'], function () {
+gulp.task('sass:prod', ['sasslint'], function () {
   return gulp.src(paths.sassMain)
-    .pipe(sass().on('error', sass.logError))
+    .pipe(sass.sync().on('error', sass.logError))
     .pipe(concat('plinth.css'))
     .pipe(minify())
     .pipe(autoprefixer({
@@ -161,7 +151,7 @@ gulp.task('watch', function () {
 // Default task (development)
 // -----------------------------------------------------------------------------
 
-gulp.task('default', ['sass:dev', 'js:dev', 'browsersync', 'watch']);
+gulp.task('default', ['sass:dev', 'js:dev', 'watch']);
 
 
 
