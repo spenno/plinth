@@ -15,13 +15,11 @@ html {
  * making all elements inheriting from the root box-sizing value
  * See: https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/
  */
-// sass-lint:disable no-universal-selectors
 *,
 *::before,
 *::after {
   box-sizing: inherit;
 }
-// sass-lint:enable no-universal-selectors
 
 /**
  * Basic styles for links

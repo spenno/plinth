@@ -10,7 +10,7 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     jshint = require('gulp-jshint'),
     sass = require('gulp-sass'),
-    sasslint = require('gulp-sass-lint'),
+    stylelint = require('gulp-stylelint'),
     sourcemaps = require('gulp-sourcemaps'),
     uglify = require('gulp-uglify');
 
@@ -47,15 +47,15 @@ var scripts = [
 // Sass Lint
 // -----------------------------------------------------------------------------
 
-gulp.task('sasslint', function() {
+gulp.task('stylelint', function() {
   return gulp.src(paths.sassPattern)
-    .pipe(sasslint({
-      options: {
-        configFile: '.sass-lint.yml'
-      }
-    }))
-    .pipe(sasslint.format())
-    .pipe(sasslint.failOnError())
+  .pipe(stylelint({
+    failAfterError: true,
+    reporters: [{
+      formatter: 'string',
+      console: true
+    }]
+  }));
 });
 
 
@@ -76,7 +76,7 @@ gulp.task('jshint', function() {
 // Sass (development)
 // -----------------------------------------------------------------------------
 
-gulp.task('sass:dev', ['sasslint'], function () {
+gulp.task('sass:dev', ['stylelint'], function () {
   return gulp.src(paths.sassMain)
     .pipe(sourcemaps.init())
       .pipe(sass.sync().on('error', sass.logError))
@@ -95,7 +95,7 @@ gulp.task('sass:dev', ['sasslint'], function () {
 // Sass (production)
 // -----------------------------------------------------------------------------
 
-gulp.task('sass:prod', ['sasslint'], function () {
+gulp.task('sass:prod', ['stylelint'], function () {
   return gulp.src(paths.sassMain)
     .pipe(sass.sync().on('error', sass.logError))
     .pipe(concat('plinth.css'))
