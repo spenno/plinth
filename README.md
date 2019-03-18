@@ -53,6 +53,12 @@ Update the Node.js Package Manager, NPM:
 $ npm install -g npm
 ```
 
+Install the Gulp command line utility:
+
+```
+$ npm install --g gulp-cli
+```
+
 Install all of Plinth's required packages:
 
 ```
