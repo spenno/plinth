@@ -1,162 +1,133 @@
 'use strict';
 
-// -----------------------------------------------------------------------------
-// Dependencies
-// -----------------------------------------------------------------------------
-
-var gulp = require('gulp'),
-    autoprefixer = require('gulp-autoprefixer'),
-    minify = require('gulp-clean-css'),
-    concat = require('gulp-concat'),
-    jshint = require('gulp-jshint'),
-    sass = require('gulp-sass'),
-    stylelint = require('gulp-stylelint'),
-    sourcemaps = require('gulp-sourcemaps'),
-    uglify = require('gulp-uglify');
-
-sass.compiler = require('node-sass');
+// Load plugins
+const autoprefixer = require('gulp-autoprefixer');
+const concat = require('gulp-concat');
+const gulp = require('gulp');
+const jshint = require('gulp-jshint');
+const minify = require('gulp-clean-css');
+const sass = require('gulp-sass');
+const sourcemaps = require('gulp-sourcemaps');
+const stylelint = require('gulp-stylelint');
+const uglify = require('gulp-uglify');
 
 
+// Load package file
+const pkg = require('./package.json');
 
-// -----------------------------------------------------------------------------
+
 // Paths
-// -----------------------------------------------------------------------------
-
-var paths = {
-    dist: 'dist/',
-    jsMain: 'js/main.js',
-    nodeModules: 'node_modules/',
-    sassMain: 'stylesheets/main.scss',
-    sassPattern: 'stylesheets/**/*.scss'
+const paths = {
+  dist: 'dist/',
+  jsMain: 'js/main.js',
+  nodeModules: 'node_modules/',
+  sassMain: 'stylesheets/main.scss',
+  sassPattern: 'stylesheets/**/*.scss'
 };
 
 
-
-// -----------------------------------------------------------------------------
 // Scripts to concat
-// -----------------------------------------------------------------------------
-
-var scripts = [
-    paths.nodeModules + 'match-media/matchMedia.js',
-    paths.jsMain
+const scripts = [
+  // paths.nodeModules + 'folder/file.js',
+  paths.jsMain
 ];
 
 
-
-// -----------------------------------------------------------------------------
-// Sass Lint
-// -----------------------------------------------------------------------------
-
-gulp.task('stylelint', function() {
-  return gulp.src(paths.sassPattern)
-  .pipe(stylelint({
-    failAfterError: true,
-    reporters: [{
-      formatter: 'string',
-      console: true
-    }]
-  }));
-});
+// Specify Node Sass as the Sass compiler
+sass.compiler = require('node-sass');
 
 
+// Sass linting with stylehint
+function sassLint() {
+  return gulp
+    .src(paths.sassPattern)
+    .pipe(stylelint({
+      failAfterError: true,
+      reporters: [{
+        formatter: 'string',
+        console: true
+      }]
+    }));
+}
 
-// -----------------------------------------------------------------------------
-// JSHint
-// -----------------------------------------------------------------------------
 
-gulp.task('jshint', function() {
-  return gulp.src(paths.jsMain)
+// JavaScript linting with JSHint
+function jsLint() {
+  return gulp
+    .src(paths.jsMain)
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'));
-});
+}
 
 
-
-// -----------------------------------------------------------------------------
-// Sass (development)
-// -----------------------------------------------------------------------------
-
-gulp.task('sass:dev', ['stylelint'], function () {
-  return gulp.src(paths.sassMain)
+// Compile Sass for development
+function sassDev() {
+  return gulp
+    .src(paths.sassMain)
     .pipe(sourcemaps.init())
       .pipe(sass.sync().on('error', sass.logError))
-      .pipe(concat('plinth.css'))
+      .pipe(concat(pkg.name + '.css'))
     .pipe(sourcemaps.write())
     .pipe(autoprefixer({
       browsers: ['last 2 versions'],
       cascade: false
     }))
     .pipe(gulp.dest(paths.dist));
-});
+}
 
 
-
-// -----------------------------------------------------------------------------
-// Sass (production)
-// -----------------------------------------------------------------------------
-
-gulp.task('sass:prod', ['stylelint'], function () {
-  return gulp.src(paths.sassMain)
-    .pipe(sass.sync().on('error', sass.logError))
-    .pipe(concat('plinth.css'))
-    .pipe(minify())
+// Compile Sass for production
+function sassProd() {
+  return gulp
+    .src(paths.sassMain)
+      .pipe(sass.sync().on('error', sass.logError))
+      .pipe(concat(pkg.name + '.css'))
+      .pipe(minify())
     .pipe(autoprefixer({
       browsers: ['last 2 versions'],
       cascade: false
     }))
-    .pipe(gulp.dest(paths.dist))
-});
+    .pipe(gulp.dest(paths.dist));
+}
 
 
-
-// -----------------------------------------------------------------------------
-// JavaScript (development)
-// -----------------------------------------------------------------------------
-
-gulp.task('js:dev', ['jshint'], function() {
-  return gulp.src(scripts)
+// Compile JavaScript for development
+function jsDev() {
+  return gulp
+    .src(scripts)
     .pipe(sourcemaps.init())
-    .pipe(concat('plinth.js'))
+    .pipe(concat(pkg.name + '.js'))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.dist));
-});
+}
 
 
-
-// -----------------------------------------------------------------------------
-// JavaScript (production)
-// -----------------------------------------------------------------------------
-
-gulp.task('js:prod', ['jshint'], function() {
-  return gulp.src(scripts)
-    .pipe(concat('plinth.js'))
+// Compile JavaScript for production
+function jsProd() {
+  return gulp
+    .src(scripts)
+    .pipe(concat(pkg.name + '.js'))
     .pipe(uglify())
     .pipe(gulp.dest(paths.dist));
-});
+}
 
 
-
-// -----------------------------------------------------------------------------
-// Watch
-// -----------------------------------------------------------------------------
-
-gulp.task('watch', function () {
-  gulp.watch(paths.sassPattern, ['sass:dev']);
-  gulp.watch(paths.jsMain, ['js:dev']);
-});
+// Watch for file changes
+function watch() {
+  gulp.watch(paths.sassPattern, gulp.series(sassLint, sassDev));
+  gulp.watch(paths.jsMain, gulp.series(jsLint, jsDev));
+}
 
 
+// Define complex tasks
+const jsBuildDev = gulp.series(jsLint, jsDev);
+const jsBuildProd = gulp.series(jsLint, jsProd);
+const sassBuildDev = gulp.series(sassLint, sassDev);
+const sassBuildProd = gulp.series(sassLint, sassProd);
+const buildDev = gulp.series(gulp.parallel(sassBuildDev, jsBuildDev), watch);
+const buildProd = gulp.series(gulp.parallel(sassBuildProd, jsBuildProd));
 
-// -----------------------------------------------------------------------------
-// Default task (development)
-// -----------------------------------------------------------------------------
 
-gulp.task('default', ['sass:dev', 'js:dev', 'watch']);
-
-
-
-// -----------------------------------------------------------------------------
-// Production task
-// -----------------------------------------------------------------------------
-
-gulp.task('prod', ['sass:prod', 'js:prod']);
+// Export tasks to gulp
+exports.default = buildDev;
+exports.prod = buildProd;
