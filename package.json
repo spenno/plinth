@@ -8,7 +8,7 @@
   },
   "repository": "https://github.com/spenno/plinth.git",
   "author": "Ben Spencer",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "gulp": "^4.0.0",
     "gulp-autoprefixer": "^6.0.0",
@@ -24,5 +24,8 @@
     "jshint": "^2.10.2",
     "jshint-stylish": "^2.2.1",
     "stylelint": "^9.10.1"
+  },
+  "dependencies": {
+    "jquery": "^3.3.1"
   }
 }
