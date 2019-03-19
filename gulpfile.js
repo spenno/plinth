@@ -1,5 +1,6 @@
 'use strict';
 
+
 // Load plugins
 const autoprefixer = require('gulp-autoprefixer');
 const concat = require('gulp-concat');
@@ -28,7 +29,7 @@ const paths = {
 
 // Scripts to concat
 const scripts = [
-  // paths.nodeModules + 'folder/file.js',
+  paths.nodeModules + 'jquery/dist/jquery.js',
   paths.jsMain
 ];
 
@@ -112,7 +113,7 @@ function jsProd() {
 }
 
 
-// Watch for file changes
+// Watch for Sass and JavaScript changes
 function watch() {
   gulp.watch(paths.sassPattern, gulp.series(sassLint, sassDev));
   gulp.watch(paths.jsMain, gulp.series(jsLint, jsDev));
