@@ -15,11 +15,13 @@ html {
  * making all elements inheriting from the root box-sizing value
  * See: https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/
  */
+/* stylelint-disable selector-max-universal */
 *,
 *::before,
 *::after {
   box-sizing: inherit;
 }
+/* stylelint-enable selector-max-universal */
 
 /**
  * Basic styles for links
@@ -32,76 +34,4 @@ a {
     color: $text-color;
     text-decoration: underline;
   }
-}
-
-/**
- * Sensible resets
- * Based on Zell's CSS reset: https://github.com/zellwk/css-reset
- */
-body,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-ul,
-ol,
-li,
-p,
-pre,
-blockquote,
-figure,
-hr {
-  margin: 0;
-  padding: 0;
-}
-
-ul {
-  list-style: none;
-}
-
-input,
-textarea,
-select,
-button {
-  color: inherit;
-  font: inherit;
-  letter-spacing: inherit;
-}
-
-input,
-textarea,
-button {
-  border: 1px solid $light-grey;
-}
-
-button {
-  border-radius: 0;
-  padding: padding(0.75 1);
-  background-color: transparent;
-}
-
-button * {
-  pointer-events: none;
-}
-
-embed,
-iframe,
-img,
-object,
-video {
-  display: block;
-  max-width: 100%;
-}
-
-table {
-  table-layout: fixed;
-  width: 100%;
-}
-
-noscript {
-  display: block;
-  margin-bottom: 1em;
-  margin-top: 1em;
 }
