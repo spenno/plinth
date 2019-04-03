@@ -129,6 +129,6 @@ const buildDev = gulp.series(gulp.parallel(sassBuildDev, jsBuildDev), watch);
 const buildProd = gulp.series(gulp.parallel(sassBuildProd, jsBuildProd));
 
 
-// Export tasks to gulp
+// Export tasks to Gulp
 exports.default = buildDev;
 exports.prod = buildProd;
