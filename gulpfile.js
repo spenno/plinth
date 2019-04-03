@@ -38,7 +38,7 @@ const scripts = [
 sass.compiler = require('node-sass');
 
 
-// Sass linting with stylehint
+// Sass linting with stylelint
 function sassLint() {
   return gulp
     .src(paths.sassPattern)
