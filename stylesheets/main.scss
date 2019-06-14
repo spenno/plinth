@@ -1,7 +1,8 @@
 @charset 'UTF-8';
 
 @import
-  '../node_modules/include-media/dist/include-media';
+  '../node_modules/include-media/dist/include-media',
+  '../node_modules/modularscale-sass/stylesheets/modularscale';
 
 // 1. Configuration and helpers
 @import
