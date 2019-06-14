@@ -1,40 +1,35 @@
-(function($) {
-  'use strict';
-
-
-
+(function ($) {
+  //
   // Variables
+  //
 
 
 
 
 
+  //
   // Functions
+  //
 
 
 
 
 
-  // On document ready...
-  $(document).ready(function() {
-
+  //
+  // When all assets have loaded
+  //
+  $(window).on('load', () => {
+    //
   });
 
 
 
 
 
-  // On window load...
-  $(window).on('load', function(){
-
+  //
+  // When browser window is resized
+  //
+  $(window).on('resize', () => {
+    //
   });
-
-
-
-
-
-  // On window resize...
-  $(window).on('resize', function(){
-
-  });
-})(jQuery);
+}(jQuery));
