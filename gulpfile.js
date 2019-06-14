@@ -70,7 +70,6 @@ function sassDev() {
       .pipe(concat(pkg.name + '.css'))
     .pipe(sourcemaps.write())
     .pipe(autoprefixer({
-      browsers: ['last 2 versions'],
       cascade: false
     }))
     .pipe(gulp.dest(paths.dist));
@@ -85,7 +84,6 @@ function sassProd() {
       .pipe(concat(pkg.name + '.css'))
       .pipe(minify())
     .pipe(autoprefixer({
-      browsers: ['last 2 versions'],
       cascade: false
     }))
     .pipe(gulp.dest(paths.dist));
