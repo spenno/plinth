@@ -84,7 +84,9 @@ $ gulp prod
 ## Built with
 
 * [Sass Boilerplate](https://github.com/HugoGiraudel/sass-boilerplate) - A boilerplate for Sass projects
-* [include-media](http://include-media.com/) - Simple, elegant and maintainable media queries in Sass
 * [Gulp](http://gulpjs.com/) - Automate and enhance your workflow
+* [include-media](http://include-media.com/) - Simple, elegant and maintainable media queries in Sass
+* [Modular Scale](https://www.modularscale.com/) - Setting type to levels in a scale
 * [Stylelint](https://stylelint.io/) - A mighty, modern linter that helps you avoid errors and enforce conventions in your styles.
-* [JSHint](https://jshint.com/) - Community-driven tool that detects errors and potential problems in JavaScript code
+* [ESLint](https://eslint.org/) - The pluggable linting utility for JavaScript and JSX
+* [Babel](https://babeljs.io/) - JavaScript compiler
