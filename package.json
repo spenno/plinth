@@ -2,18 +2,15 @@
   "name": "plinth",
   "version": "1.0.0",
   "description": "A solid and simple base for front-end web projects",
-  "main": "js/main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "main": "gulpfile.js",
+  "dependencies": {
+    "jquery": "^3.4.0"
   },
-  "repository": "https://github.com/spenno/plinth.git",
-  "author": "Ben Spencer",
-  "license": "MIT",
   "devDependencies": {
-    "gulp": "^4.0.0",
-    "gulp-autoprefixer": "^6.0.0",
-    "gulp-clean-css": "^4.0.0",
-    "gulp-cli": "^2.0.1",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^6.1.0",
+    "gulp-clean-css": "^4.2.0",
+    "gulp-cli": "^2.2.0",
     "gulp-concat": "^2.6.1",
     "gulp-jshint": "^2.1.0",
     "gulp-sass": "^4.0.2",
@@ -23,9 +20,21 @@
     "include-media": "^1.4.9",
     "jshint": "^2.10.2",
     "jshint-stylish": "^2.2.1",
-    "stylelint": "^9.10.1"
+    "stylelint": "^9.10.1",
+    "stylelint-config-standard": "^18.3.0",
+    "stylelint-scss": "^3.8.0"
   },
-  "dependencies": {
-    "jquery": "^3.3.1"
-  }
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spenno/plinth.git"
+  },
+  "author": "Ben Spencer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/spenno/plinth/issues"
+  },
+  "homepage": "https://github.com/spenno/plinth#readme"
 }
