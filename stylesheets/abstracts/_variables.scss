@@ -2,69 +2,193 @@
 // This file contains all application-wide Sass variables.
 // -----------------------------------------------------------------------------
 
+//
+// Font families
+//
 
+// Regular font family
+$font-regular: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif !default;
 
-
-
-/// Regular font family
-/// @type List
-$text-font-stack: 'Open Sans', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif !default;
-
-/// Code (monospace) font family
-/// @type List
-$code-font-stack: 'Courier New', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Monaco', monospace !default;
-
-
-
-
-
-/// Copy text color
-/// @type Color
-$text-color: rgb(34, 34, 34) !default;
-
-/// Main brand color
-/// @type Color
-$brand-color: rgb(229, 0, 80) !default;
-
-/// Light grey
-/// @type Color
-$light-grey: rgb(237, 237, 237) !default;
-
-/// Medium grey
-/// @type Color
-$mid-grey: rgb(153, 153, 153) !default;
-
-/// Dark grey
-/// @type Color
-$dark-grey: rgb(68, 68, 68) !default;
+// Code (monospace) font family
+$font-code: 'Monaco', 'Courier New', monospace !default;
 
 
 
 
 
-/// Container's maximum width
-/// @type Length
-$max-width: 1180px !default;
+//
+// Type scale
+// https://www.modularscale.com/?1&rem&1.125
+//
+
+// Modular scale configuration
+$modularscale: (
+  ratio: 1.125, // Major second scale ratio
+  960px: (
+    base: 1rem // Base font size for larger screens
+  ),
+  600px: (
+    base: 0.75rem, // Smaller base font size for smaller screens
+  )
+) !default;
 
 
-
-
-
-/// Breakpoints map
-/// @prop {String} keys - Keys are identifiers mapped to a given length
-/// @prop {Map} values - Values are actual breakpoints expressed in pixels
-$breakpoints: (
-  'small': 320px,
-  'medium': 768px,
-  'large': 1024px,
+// Type settings for each level on the scale
+$type-settings: (
+  -2: (
+    type-scale: -2, // 0.79rem ((12.64px)
+    line-height: 1.582278481 // 1.25rem / 0.79rem
+  ),
+  -1: (
+    type-scale: -1, // 0.889rem (14.22px)
+    line-height: 1.406074241 // 1.25rem / 0.889rem
+  ),
+  0: (
+    type-scale: 0, // 1rem (16px)
+    line-height: 1.5 // 1.5rem / 1rem
+  ),
+  1: (
+    type-scale: 1, // 1.125rem (18px)
+    line-height: 1.555555556 // 1.75rem / 1.125rem
+  ),
+  2: (
+    type-scale: 2, // 1.266rem (20.25px)
+    line-height: 1.382306477 // 1.75rem / 1.266rem
+  ),
+  3: (
+    type-scale: 3, // 1.424rem (22.78px)
+    line-height: 1.404494382 // 2rem / 1.424rem
+  ),
+  4: (
+    type-scale: 4, // 1.602rem (25.63px)
+    line-height: 1.404494382 // 2.25rem / 1.602rem
+  ),
+  5: (
+    type-scale: 5, // 1.802rem (28.83px)
+    line-height: 1.387347392 // 2.5rem / 1.802rem
+  ),
+  6: (
+    type-scale: 6, // 2.027rem (32.44px)
+    line-height: 1.356684756 // 2.75rem / 2.027rem
+  ),
+  7: (
+    type-scale: 7, // 2.281rem (36.49px)
+    line-height: 1.315212626 // 3rem / 2.281rem
+  ),
+  8: (
+    type-scale: 8, // 2.566rem (41.05px)
+    line-height: 1.266562744 // 3.25rem / 2.566rem
+  ),
+  9: (
+    type-scale: 9, // 2.887rem (46.18px)
+    line-height: 1.21233114 // 3.5rem / 2.887rem
+  ),
+  10: (
+    type-scale: 10, // 3.247rem (51.96px)
+    line-height: 1.154912227 // 3.75rem / 3.247rem
+  ),
+  11: (
+    type-scale: 11, // 3.653rem (58.45px)
+    line-height: 1.16342732 // 4.25rem / 3.653rem
+  ),
+  12: (
+    type-scale: 12, // 4.11rem (65.76px)
+    line-height: 1.094890511 // 4.5rem / 4.11rem
+  ),
+  13: (
+    type-scale: 13, // 4.624rem (73.98px)
+    line-height: 1.081314879 // 5rem / 4.624rem
+  ),
+  14: (
+    type-scale: 14, // 5.202rem (83.23px)
+    line-height: 1.057285659 // 5.5rem / 5.202rem
+  ),
+  15: (
+    type-scale: 15, // 5.852rem (93.63px)
+    line-height: 1.068010936 // 6.25rem / 5.852rem
+  ),
+  16: (
+    type-scale: 16, // 6.583rem (105.33px)
+    line-height: 1.025368373 // 6.75rem / 6.583rem
+  ),
+  17: (
+    type-scale: 17, // 7.406rem ((118.50px)
+    line-height: 1.012692412 // 7.5rem / 7.406rem
+  ),
+  18: (
+    type-scale: 18, // 8.332rem (133.31px)
+    line-height: 1.020163226 // 8.5rem / 8.332rem
+  ),
+  19: (
+    type-scale: 19, // 9.373rem (149.97px)
+    line-height: 1.013549557 // 9.5rem / 9.373rem
+  ),
+  20: (
+    type-scale: 20, // 10.545rem (168.72px)
+    line-height: 1.043148412 // 11rem / 10.545rem
+  )
 ) !default;
 
 
 
 
 
-/// Relative or absolute URL where all assets are served from
-/// @type String
-/// @example scss - When using a CDN
-///   $base-url: 'http://cdn.example.com/assets/';
-$base-url: '/assets/' !default;
+//
+// Colours
+//
+
+// Text color
+$color-text: rgb(34, 34, 34) !default;
+
+// Main brand color
+$color-brand: rgb(229, 0, 80) !default;
+
+// Light grey
+$color-light-grey: rgb(237, 237, 237) !default;
+
+// Medium grey
+$color-mid-grey: rgb(153, 153, 153) !default;
+
+// Dark grey
+$color-dark-grey: rgb(68, 68, 68) !default;
+
+
+
+
+
+//
+// Container's maximum width
+//
+$max-width: 1180px !default;
+
+
+
+
+
+//
+// Breakpoints map
+//
+$breakpoints: (
+  'xs': 400px,
+  'xs-tweak': 500px,
+  's': 600px,
+  's-tweak': 680px,
+  'm': 760px,
+  'm-tweak': 860px,
+  'l': 960px,
+  'xl': 1020px,
+  'max': $max-width,
+  'wide': 1220px,
+  'wide-tweak': 1330px,
+  'ultra-wide': 1440px,
+  'super-wide': 1600px
+) !default;
+
+
+
+
+
+//
+// Space
+//
+$space: 1.5rem !default; // 24px
