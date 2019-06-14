@@ -30,7 +30,8 @@ a {
   color: $brand-color;
   text-decoration: none;
 
-  @include on-event {
+  &:focus,
+  &:hover {
     color: $text-color;
     text-decoration: underline;
   }
