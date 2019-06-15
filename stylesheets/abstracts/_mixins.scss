@@ -7,8 +7,8 @@
 // Get font size and line height from type settings map
 // Example: `@include type-setting(2)`;
 //
-// @mixin type-setting($level) {
-//   @include ms-respond(font-size, map-get(map-get($type-settings, $level), type-scale));
+@mixin type-setting($level) {
+  @include ms-respond(font-size, map-get(map-get($type-settings, $level), type-scale));
 
-//   line-height: map-get(map-get($type-settings, $level), line-height);
-// }
+  line-height: map-get(map-get($type-settings, $level), line-height);
+}
