@@ -1,6 +1,4 @@
 (function ($) {
-  'use strict';
-
   //
   // Variables
   //
@@ -20,7 +18,7 @@
   //
   // When all assets have loaded
   //
-  $(window).on('load', function () {
+  $(window).on('load', () => {
     //
   });
 
@@ -31,7 +29,7 @@
   //
   // When browser window is resized
   //
-  $(window).on('resize', function () {
+  $(window).on('resize', () => {
     //
   });
 }(jQuery));

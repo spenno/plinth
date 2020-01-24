@@ -4,6 +4,7 @@
 // Load plugins
 //
 const autoprefixer = require('gulp-autoprefixer');
+const babel = require('gulp-babel');
 const concat = require('gulp-concat');
 const eslint = require('gulp-eslint');
 const gulp = require('gulp');
@@ -45,6 +46,7 @@ const paths = {
 // Scripts to concat
 //
 const scripts = [
+  paths.nodeModules + 'babel-polyfill/dist/polyfill.js',
   paths.nodeModules + 'jquery/dist/jquery.js',
   paths.jsMain
 ];
@@ -141,6 +143,7 @@ function sassProd() {
 function jsDev() {
   return gulp
     .src(scripts)
+    .pipe(babel())
     .pipe(sourcemaps.init())
     .pipe(concat(pkg.name + '.js'))
     .pipe(sourcemaps.write())
@@ -157,6 +160,7 @@ function jsDev() {
 function jsProd() {
   return gulp
     .src(scripts)
+    .pipe(babel())
     .pipe(concat(pkg.name + '.js'))
     .pipe(uglify())
     .pipe(gulp.dest(paths.dist));

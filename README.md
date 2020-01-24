@@ -89,3 +89,4 @@ $ gulp prod
 * [Modular Scale](https://www.modularscale.com/) - Setting type to levels in a scale
 * [Stylelint](https://stylelint.io/) - A mighty, modern linter that helps you avoid errors and enforce conventions in your styles.
 * [ESLint](https://eslint.org/) - The pluggable linting utility for JavaScript and JSX
+* [Babel](https://babeljs.io/) - JavaScript compiler

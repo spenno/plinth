@@ -1,9 +1,10 @@
 {
   "env": {
     "browser": true,
+    "es6": true,
     "jquery": true
   },
-  "extends": "airbnb-base/legacy",
+  "extends": "airbnb-base",
   "rules": {
     "no-multiple-empty-lines": [
       2, {
