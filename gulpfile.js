@@ -1,13 +1,16 @@
 'use strict';
 
-//
-// Load plugins
-//
+/**
+ * Load plugins
+ */
 const autoprefixer = require('gulp-autoprefixer');
 const babel = require('gulp-babel');
+const cache = require('gulp-cache');
 const concat = require('gulp-concat');
+const del = require('del');
 const eslint = require('gulp-eslint');
 const gulp = require('gulp');
+const imagemin = require('gulp-imagemin');
 const minify = require('gulp-clean-css');
 const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
@@ -18,36 +21,38 @@ const uglify = require('gulp-uglify');
 
 
 
-//
-// Load package file
-//
+/**
+ * Load package file
+ */
 const pkg = require('./package.json');
 
 
 
 
 
-//
-// Paths
-//
+/**
+ * Paths
+ */
 const paths = {
   dist: 'dist/',
-  jsMain: 'js/main.js',
+  distFiles: 'dist/**',
+  distImages: 'dist/images/',
+  images: 'src/images/**/*.+(png|jpg|jpeg|gif|svg)',
+  jsMain: 'src/js/main.js',
   nodeModules: 'node_modules/',
-  sassMain: 'stylesheets/main.scss',
-  sassPattern: 'stylesheets/**/*.scss'
+  scssMain: 'src/scss/main.scss',
+  scssPattern: 'src/scss/**/*.scss'
 };
 
 
 
 
 
-//
-// Scripts to concat
-//
+/**
+ * Scripts
+ */
 const scripts = [
-  paths.nodeModules + 'babel-polyfill/dist/polyfill.js',
-  paths.nodeModules + 'jquery/dist/jquery.js',
+  // paths.nodeModules + 'path/to/project/specific/script',
   paths.jsMain
 ];
 
@@ -55,21 +60,21 @@ const scripts = [
 
 
 
-//
-// Specify Node Sass as the Sass compiler
-//
+/**
+ * Specify Node Sass as the Sass compiler
+ */
 sass.compiler = require('node-sass');
 
 
 
 
 
-//
-// Sass linting with stylelint
-//
+/**
+ * Sass linting with stylelint
+ */
 function sassLint() {
   return gulp
-    .src(paths.sassPattern)
+    .src(paths.scssPattern)
     .pipe(stylelint({
       failAfterError: true,
       reporters: [{
@@ -83,9 +88,9 @@ function sassLint() {
 
 
 
-//
-// JavaScript linting with JSHint
-//
+/**
+ * JavaScript linting with ESLint
+ */
 function jsLint() {
   return gulp
     .src(paths.jsMain)
@@ -98,12 +103,12 @@ function jsLint() {
 
 
 
-//
-// Compile Sass for development
-//
+/**
+ * Compile Sass for development
+ */
 function sassDev() {
   return gulp
-    .src(paths.sassMain)
+    .src(paths.scssMain)
     .pipe(sourcemaps.init())
       .pipe(sass.sync().on('error', sass.logError))
       .pipe(concat(pkg.name + '.css'))
@@ -118,12 +123,12 @@ function sassDev() {
 
 
 
-//
-// Compile Sass for production
-//
+/**
+ * Compile Sass for production
+ */
 function sassProd() {
   return gulp
-    .src(paths.sassMain)
+    .src(paths.scssMain)
       .pipe(sass.sync().on('error', sass.logError))
       .pipe(concat(pkg.name + '.css'))
       .pipe(minify())
@@ -137,14 +142,14 @@ function sassProd() {
 
 
 
-//
-// Compile JavaScript for development
-//
+/**
+ * Compile JavaScript for development
+ */
 function jsDev() {
   return gulp
     .src(scripts)
-    .pipe(babel())
     .pipe(sourcemaps.init())
+    .pipe(babel())
     .pipe(concat(pkg.name + '.js'))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.dist));
@@ -154,9 +159,9 @@ function jsDev() {
 
 
 
-//
-// Compile JavaScript for production
-//
+/**
+ * Compile JavaScript for production
+ */
 function jsProd() {
   return gulp
     .src(scripts)
@@ -170,34 +175,97 @@ function jsProd() {
 
 
 
-//
-// Watch for Sass and JavaScript changes
-//
-function watch() {
-  gulp.watch(paths.sassPattern, gulp.series(sassLint, sassDev));
-  gulp.watch(paths.jsMain, gulp.series(jsLint, jsDev));
+/**
+ * Image optimisation
+ */
+function images() {
+  return gulp
+    .src(paths.images)
+    .pipe(cache(imagemin([
+      imagemin.gifsicle({
+        interlaced: true
+      }),
+      imagemin.mozjpeg({
+        quality: 75,
+        progressive: true
+      }),
+      imagemin.optipng({
+        optimizationLevel: 7
+      }),
+      imagemin.svgo({
+        plugins: [
+          {
+            removeViewBox: false
+          },
+          {
+            cleanupIDs: true
+          }
+        ]
+      })
+    ])))
+    .pipe(gulp.dest(paths.distImages));
 }
 
 
 
 
 
-//
-// Define complex tasks
-//
+/**
+ * Watch for Sass, JavaScript and image changes
+ */
+function watch() {
+  gulp.watch(paths.scssPattern, gulp.series(sassLint, sassDev));
+  gulp.watch(paths.jsMain, gulp.series(jsLint, jsDev));
+  gulp.watch(paths.images, gulp.series(images));
+}
+
+
+
+
+
+/**
+ * Maintenance tasks
+ */
+
+// Clean the dist folder
+function cleanDist(done) {
+  del(paths.distFiles);
+  done();
+}
+
+// Clear the image cache
+function clearCache(done) {
+  cache.clearAll;
+  done();
+}
+
+
+
+
+
+/**
+ * Define complex tasks
+ */
+const imagesBuild = gulp.series(images);
 const jsBuildDev = gulp.series(jsLint, jsDev);
 const jsBuildProd = gulp.series(jsLint, jsProd);
 const sassBuildDev = gulp.series(sassLint, sassDev);
 const sassBuildProd = gulp.series(sassLint, sassProd);
-const buildDev = gulp.series(gulp.parallel(sassBuildDev, jsBuildDev), watch);
-const buildProd = gulp.series(gulp.parallel(sassBuildProd, jsBuildProd));
+
+const buildDev = gulp.series(gulp.parallel(sassBuildDev, jsBuildDev, imagesBuild), watch);
+const buildProd = gulp.series(gulp.parallel(sassBuildProd, jsBuildProd, imagesBuild));
+
+const clean = gulp.series(cleanDist);
+const clear = gulp.series(clearCache);
 
 
 
 
 
-//
-// Export tasks to Gulp
-//
+/**
+ * Export the tasks to Gulp
+ */
 exports.default = buildDev;
 exports.prod = buildProd;
+exports.cleanDist = clean;
+exports.clearCache = clear;
