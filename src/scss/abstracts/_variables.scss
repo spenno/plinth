@@ -25,12 +25,12 @@ $font-code: 'Monaco', 'Courier New', monospace !default;
 $modularscale: (
   ratio: 1.125, // Major second scale ratio
   960px: (
-    base: 1rem // Base font size for larger screens
+    base: 0.75rem // Base font size for larger screens
   ),
   600px: (
-    base: 0.75rem, // Smaller base font size for smaller screens
+    base: 1rem // Smaller base font size for smaller screens
   )
-) !default;
+);
 
 
 // Type settings for each level on the scale
@@ -127,7 +127,7 @@ $type-settings: (
     type-scale: 20, // 10.545rem (168.72px)
     line-height: 1.043148412 // 11rem / 10.545rem
   )
-) !default;
+);
 
 
 
