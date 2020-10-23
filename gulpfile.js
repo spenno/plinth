@@ -37,7 +37,7 @@ const pkg = require('./package.json');
  */
 function browsersyncInit() {
   browsersync.init({
-    server: './dist'
+    server: paths.dist
   });
 }
 
@@ -122,7 +122,7 @@ function jsLint() {
 
 
 /**
- * Copy HTML across to dist for development
+ * Straight copy of HTML across to dist during development
  */
 function htmlDev() {
   return gulp
