@@ -5,11 +5,13 @@
  */
 const autoprefixer = require('gulp-autoprefixer');
 const babel = require('gulp-babel');
+const browsersync = require('browser-sync').create();
 const cache = require('gulp-cache');
 const concat = require('gulp-concat');
 const del = require('del');
 const eslint = require('gulp-eslint');
 const gulp = require('gulp');
+const htmlmin = require('gulp-htmlmin');
 const imagemin = require('gulp-imagemin');
 const minify = require('gulp-clean-css');
 const sass = require('gulp-sass');
@@ -31,12 +33,28 @@ const pkg = require('./package.json');
 
 
 /**
+ * Browsersync
+ */
+function browsersyncInit() {
+  browsersync.init({
+    server: './dist'
+  });
+}
+
+
+
+
+
+/**
  * Paths
  */
 const paths = {
   dist: 'dist/',
   distFiles: 'dist/**',
+  distCSS: 'dist/css/',
   distImages: 'dist/images/',
+  distJS: 'dist/js/',
+  html: 'src/html/**/*.html',
   images: 'src/images/**/*.+(png|jpg|jpeg|gif|svg)',
   jsMain: 'src/js/main.js',
   nodeModules: 'node_modules/',
@@ -104,6 +122,33 @@ function jsLint() {
 
 
 /**
+ * Copy HTML across to dist for development
+ */
+function htmlDev() {
+  return gulp
+    .src(paths.html)
+    .pipe(gulp.dest(paths.dist));
+}
+
+
+
+
+
+/**
+ * Minify HTML for production
+ */
+function htmlProd() {
+  return gulp
+    .src(paths.html)
+    .pipe(htmlmin({ collapseWhitespace: true }))
+    .pipe(gulp.dest(paths.dist));
+}
+
+
+
+
+
+/**
  * Compile Sass for development
  */
 function sassDev() {
@@ -116,7 +161,7 @@ function sassDev() {
     .pipe(autoprefixer({
       cascade: false
     }))
-    .pipe(gulp.dest(paths.dist));
+    .pipe(gulp.dest(paths.distCSS));
 }
 
 
@@ -135,7 +180,7 @@ function sassProd() {
     .pipe(autoprefixer({
       cascade: false
     }))
-    .pipe(gulp.dest(paths.dist));
+    .pipe(gulp.dest(paths.distCSS));
 }
 
 
@@ -152,7 +197,7 @@ function jsDev() {
     .pipe(babel())
     .pipe(concat(pkg.name + '.js'))
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest(paths.dist));
+    .pipe(gulp.dest(paths.distJS));
 }
 
 
@@ -168,7 +213,7 @@ function jsProd() {
     .pipe(babel())
     .pipe(concat(pkg.name + '.js'))
     .pipe(uglify())
-    .pipe(gulp.dest(paths.dist));
+    .pipe(gulp.dest(paths.distJS));
 }
 
 
@@ -211,12 +256,15 @@ function images() {
 
 
 /**
- * Watch for Sass, JavaScript and image changes
+ * Watch for HTML, Sass, JavaScript and image changes
  */
 function watch() {
-  gulp.watch(paths.scssPattern, gulp.series(sassLint, sassDev));
-  gulp.watch(paths.jsMain, gulp.series(jsLint, jsDev));
-  gulp.watch(paths.images, gulp.series(images));
+  browsersyncInit();
+
+  gulp.watch(paths.html, gulp.series(htmlDev)).on('change', browsersync.reload);
+  gulp.watch(paths.scssPattern, gulp.series(sassLint, sassDev)).on('change', browsersync.reload);
+  gulp.watch(paths.jsMain, gulp.series(jsLint, jsDev)).on('change', browsersync.reload);
+  gulp.watch(paths.images, gulp.series(images)).on('change', browsersync.reload);
 }
 
 
@@ -246,14 +294,16 @@ function clearCache(done) {
 /**
  * Define complex tasks
  */
-const imagesBuild = gulp.series(images);
-const jsBuildDev = gulp.series(jsLint, jsDev);
-const jsBuildProd = gulp.series(jsLint, jsProd);
+const htmlBuildDev = gulp.series(htmlDev);
+const htmlBuildProd = gulp.series(htmlProd);
 const sassBuildDev = gulp.series(sassLint, sassDev);
 const sassBuildProd = gulp.series(sassLint, sassProd);
+const jsBuildDev = gulp.series(jsLint, jsDev);
+const jsBuildProd = gulp.series(jsLint, jsProd);
+const imagesBuild = gulp.series(images);
 
-const buildDev = gulp.series(gulp.parallel(sassBuildDev, jsBuildDev, imagesBuild), watch);
-const buildProd = gulp.series(gulp.parallel(sassBuildProd, jsBuildProd, imagesBuild));
+const buildDev = gulp.series(gulp.parallel(sassBuildDev, jsBuildDev, imagesBuild, htmlBuildDev), watch);
+const buildProd = gulp.series(gulp.parallel(sassBuildProd, jsBuildProd, imagesBuild, htmlBuildProd));
 
 const clean = gulp.series(cleanDist);
 const clear = gulp.series(clearCache);
