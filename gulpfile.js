@@ -77,16 +77,18 @@ sass.compiler = require('node-sass');
 /**
  * Browsersync
  */
-function browsersyncInit() {
+function browsersyncInit(done) {
   browsersync.init({
     server: {
       baseDir: paths.dist
     }
   });
+  done();
 }
 
-function browsersyncReload() {
+function browsersyncReload(done) {
   browsersync.reload();
+  done();
 }
 
 
