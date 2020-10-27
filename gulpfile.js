@@ -33,19 +33,6 @@ const pkg = require('./package.json');
 
 
 /**
- * Browsersync
- */
-function browsersyncInit() {
-  browsersync.init({
-    server: paths.dist
-  });
-}
-
-
-
-
-
-/**
  * Paths
  */
 const paths = {
@@ -82,6 +69,25 @@ const scripts = [
  * Specify Node Sass as the Sass compiler
  */
 sass.compiler = require('node-sass');
+
+
+
+
+
+/**
+ * Browsersync
+ */
+function browsersyncInit() {
+  browsersync.init({
+    server: {
+      baseDir: paths.dist
+    }
+  });
+}
+
+function browsersyncReload() {
+  browsersync.reload();
+}
 
 
 
@@ -161,7 +167,8 @@ function sassDev() {
     .pipe(autoprefixer({
       cascade: false
     }))
-    .pipe(gulp.dest(paths.distCSS));
+    .pipe(gulp.dest(paths.distCSS))
+    .pipe(browsersync.stream());
 }
 
 
@@ -259,12 +266,10 @@ function images() {
  * Watch for HTML, Sass, JavaScript and image changes
  */
 function watch() {
-  browsersyncInit();
-
-  gulp.watch(paths.html, gulp.series(htmlDev)).on('change', browsersync.reload);
-  gulp.watch(paths.scssPattern, gulp.series(sassLint, sassDev)).on('change', browsersync.reload);
-  gulp.watch(paths.jsMain, gulp.series(jsLint, jsDev)).on('change', browsersync.reload);
-  gulp.watch(paths.images, gulp.series(images)).on('change', browsersync.reload);
+  gulp.watch(paths.html, gulp.series(htmlDev, browsersyncReload));
+  gulp.watch(paths.scssPattern, gulp.series(sassLint, sassDev));
+  gulp.watch(paths.jsMain, gulp.series(jsLint, jsDev, browsersyncReload));
+  gulp.watch(paths.images, gulp.series(images, browsersyncReload));
 }
 
 
@@ -302,7 +307,7 @@ const jsBuildDev = gulp.series(jsLint, jsDev);
 const jsBuildProd = gulp.series(jsLint, jsProd);
 const imagesBuild = gulp.series(images);
 
-const buildDev = gulp.series(gulp.parallel(sassBuildDev, jsBuildDev, imagesBuild, htmlBuildDev), watch);
+const buildDev = gulp.series(gulp.parallel(sassBuildDev, jsBuildDev, imagesBuild, htmlBuildDev), gulp.parallel(watch, browsersyncInit));
 const buildProd = gulp.series(gulp.parallel(sassBuildProd, jsBuildProd, imagesBuild, htmlBuildProd));
 
 const clean = gulp.series(cleanDist);
