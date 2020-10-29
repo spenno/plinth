@@ -18,17 +18,21 @@ $font-code: 'Monaco', 'Courier New', monospace !default;
 
 //
 // Type scale
-// https://www.modularscale.com/?1&rem&1.125
+// Major second scale ratio: https://www.modularscale.com/?1&rem&1.125
 //
 
 // Modular scale configuration
 $modularscale: (
-  ratio: 1.125, // Major second scale ratio
-  960px: (
-    base: 0.75rem // Base font size for larger screens
-  ),
+  base: 1rem,
+  ratio: 1.125,
   600px: (
-    base: 1rem // Smaller base font size for smaller screens
+    base: 0.75rem
+  ),
+  760px: (
+    base: 0.875rem
+  ),
+  960px: (
+    base: 1rem
   )
 );
 
