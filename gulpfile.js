@@ -17,7 +17,7 @@ const minify = require('gulp-clean-css');
 const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
 const stylelint = require('gulp-stylelint');
-const uglify = require('gulp-uglify');
+const uglify = require('gulp-uglify-es').default;
 
 
 

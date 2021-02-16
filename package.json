@@ -26,7 +26,7 @@
     "gulp-sass": "^4.1.0",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-stylelint": "^13.0.0",
-    "gulp-uglify": "^3.0.2",
+    "gulp-uglify-es": "^2.0.0",
     "include-media": "^1.4.9",
     "modularscale-sass": "^3.0.10",
     "stylelint": "^13.7.2",
