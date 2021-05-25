@@ -7,7 +7,7 @@
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",
     "browser-sync": "^2.26.13",
-    "browserslist": "^4.14.5",
+    "browserslist": "^4.16.5",
     "del": "^6.0.0",
     "eslint": "^7.11.0",
     "eslint-config-airbnb-base": "^14.2.0",
