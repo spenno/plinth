@@ -8,7 +8,7 @@
     "at-rule-empty-line-before": [
       "always", {
         "except": [
-          "blockless-after-same-name-blockless",
+          "blockless-after-blockless",
           "first-nested"
         ],
         "ignore": [
@@ -31,6 +31,7 @@
     ],
     "color-no-hex": true,
     "color-named": "never",
+    "declaration-no-important": true,
     "max-empty-lines": 5,
     "indentation": [2, {
       "ignore": [
